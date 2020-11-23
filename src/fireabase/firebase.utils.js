@@ -16,17 +16,15 @@ const config = {
 
   export const createUserProfileDocument = async (userAuth, additionalData) => {
       if(!userAuth) {
-          //console.log(userAuth, "Sin valor");
           return;
       }
-        const userReft = firestore.doc(`users/${userAuth.uid}`);
-        const userSnapShot = await userReft.get();
-        console.log(userSnapShot);
-        if(!userSnapShot){
+        const userRef = firestore.doc(`users/${userAuth.uid}`);
+        const snapShot = await userRef.get();
+        if (!snapShot.exists) {
             const {displayName, email} = userAuth;
             const createdAt = new Date();
             try{
-                await userReft.set({
+                await userRef.set({
                     displayName,
                     email,
                     createdAt,
@@ -37,7 +35,7 @@ const config = {
                 console.log("error",ex.message);
             }
         }
-    return userReft;
+    return userRef;
   }
 
   export const auth = firebase.auth();

@@ -1,7 +1,7 @@
 import React from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { signInWithGoogle }  from '../../fireabase/firebase.utils';
+import { auth, signInWithGoogle }  from '../../fireabase/firebase.utils';
 
 import './sign-in.styles.scss';
 
@@ -17,7 +17,14 @@ class SignIn extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.setState( {email: '',password: ''}
+        const {email, password} = this.state;
+        try{
+            auth.signInWithEmailAndPassword(email,password);
+        }catch(error){
+            console.log(error,'Ocurrio un error en el login.');
+        }
+        this.setState( 
+            {email: '',password: ''}
         )
 
     }
