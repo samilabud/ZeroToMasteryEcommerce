@@ -18,9 +18,9 @@ const config = {
       if(!userAuth) {
           return;
       }
-        const userRef = firestore.doc(`users/${userAuth.uid}`);
-        const snapShot = await userRef.get();
-        if (!snapShot.exists) {
+        const userRef = firestore.doc(`users/${userAuth.uid}`); //Query Reference
+        const snapShot = await userRef.get(); //Document Reference, getting snapshot (Document Snapshot)
+        if (!snapShot.exists) {//Return true if document exists
             const {displayName, email} = userAuth;
             const createdAt = new Date();
             try{
