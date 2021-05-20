@@ -7,6 +7,7 @@ const config = {
     authDomain: "ecommerceztom.firebaseapp.com",
     databaseURL: "https://ecommerceztom.firebaseio.com",
     projectId: "ecommerceztom",
+    name: "EcommerceZtoM",
     storageBucket: "ecommerceztom.appspot.com",
     messagingSenderId: "745149943574",
     appId: "1:745149943574:web:5e4d9e56554d82c35f8a37"
@@ -36,6 +37,36 @@ const config = {
             }
         }
     return userRef;
+  }
+
+  export const addCollectionAndItems = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+    
+    const batch = firestore.batch()
+    objectsToAdd.forEach(object=>{
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, object);
+
+    });
+    return await batch.commit();
+  }
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+      const transformedCollection = collections.docs.map(
+          doc => {
+              const {title, items} = doc.data();
+              return{
+                  routeName: encodeURI(title.toLowerCase()),
+                  id: doc.id,
+                  title, 
+                  items
+              }
+          }
+      );
+      return transformedCollection.reduce((accumulator,collection)=>{
+          accumulator[collection.title.toLowerCase()] = collection;
+          return accumulator;
+      },{});
   }
 
   export const auth = firebase.auth();

@@ -13,11 +13,9 @@ import ShopPage from './pages/shop/shop.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 import SignInAndSignUp from './pages/signin-and-singup/signin-and-singup.component';
 import { auth,createUserProfileDocument } from './fireabase/firebase.utils';
+
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
-
-
-
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -37,10 +35,9 @@ class App extends React.Component {
               ...snapShot.data()
             });
         });
-      }else{
-        setCurrentUser(userAuth);
       }
-      
+      setCurrentUser(userAuth);
+      //  to add data, was deleted addCollectionAndItems('collections',collectionsArray.map(({title, items})=>({title, items})));
     })
   }
 
