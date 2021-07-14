@@ -3,25 +3,26 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "engines": {
-    "node": "16.4.1",
+    "node": "10.15.3",
     "npm": "6.4.1"
   },
-  
   "scripts": {
-    "client": "cd client && npm start",
+    "client": "cd client && yarn start",
     "server": "nodemon server.js",
     "build": "cd client && npm run build",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
-    "compression": "1.7.4",
-    "dotenv": "10.0.0",
-    "express": "^4.17.1",
-    "stripe": "8.161.0"
+    "body-parser": "^1.18.3",
+    "cors": "2.8.5",
+    "dotenv": "7.0.0",
+    "express": "^4.16.4",
+    "stripe": "6.28.0"
   },
   "devDependencies": {
-    "concurrently": "^6.2.0",
-    "nodemon": "^2.0.12"
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.19.1"
   }
 }
