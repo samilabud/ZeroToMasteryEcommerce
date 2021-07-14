@@ -2,6 +2,10 @@
   "name": "sambackendecommerce",
   "version": "1.0.0",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "12.14.0",
+    "npm": "6.4.1"
+  },
   "scripts": {
     "client": "cd client && npm run start",
     "server": "nodemon server.js",
