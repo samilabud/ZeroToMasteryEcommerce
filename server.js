@@ -3,6 +3,8 @@ const express = require('express');
 //const bodyParser = require('body-parser');  Ya no se usa, ahora se usa el mismo express, ver debajo
 const path = require('path');
 
+//usar el .env si no estamos en produccion, de lo contrario setear las variables en produccion tipo:
+     //heroku config:set STRYPE_SECRET_KEY=1234
 if(process.env.NODE_ENV !== 'production'){
     require('dotenv').config();
 }
