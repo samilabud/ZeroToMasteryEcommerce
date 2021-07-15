@@ -23,8 +23,7 @@ app.use(express.json()); //parsear el request por json
 //app.use(cors()); //ya no se necesita
 
 if(process.env.NODE_ENV==='production'){
-    app.use(express.static(path.join(__dirname,'cliente/build')));
-
+    app.use(express.static(path.join(__dirname, 'client/build')));
     app.get('*', function(req, res){
         res.sendFile(path.join(__dirname,'client/build','index.html'));
     })
