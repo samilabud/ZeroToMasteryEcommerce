@@ -40,6 +40,10 @@ app.listen(port, error=>{
 
 });
 
+app.get('/service-worker.js',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'..','build','service-worker.js'))
+})
+
 app.post('/payment',function(req,res){
     const body = {
         source: req.body.token.id,
