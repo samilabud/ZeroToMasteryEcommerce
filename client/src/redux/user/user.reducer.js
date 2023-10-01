@@ -10,7 +10,7 @@ const INITIAL_STATE = {
       case UserActionTypes.SIGN_UP_SUCCESS:
         return {
           ...state,
-          currentUser: action.payload,
+          currentUser: action.payload && action.payload.id!=='undefined' ? action.payload : null,
           error: null
         };
       case UserActionTypes.SIGN_OUT_SUCCESS:
@@ -21,10 +21,15 @@ const INITIAL_STATE = {
         };
       case UserActionTypes.SIGN_IN_FAILURE:
       case UserActionTypes.SIGN_OUT_FAILURE:
+        return {
+          ...state,
+          signInError: action.payload
+        };
+      
       case UserActionTypes.SIGN_UP_FAILURE:
         return {
           ...state,
-          error: action.payload
+          signUpError: action.payload
         };
 
       default:
