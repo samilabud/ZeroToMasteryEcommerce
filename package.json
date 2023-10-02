@@ -20,6 +20,7 @@
     "stripe": "6.28.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "concurrently": "^6.2.0",
     "nodemon": "^2.0.12"
   }
