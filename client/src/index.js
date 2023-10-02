@@ -6,15 +6,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Elements } from "@stripe/react-stripe-js";
 
 import {store, persistor} from './redux/store';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { stripePromise } from "./utils/stripe/stripe.utils";
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <PersistGate persistor={persistor}>
-        <App />
+        <Elements stripe={stripePromise}>
+          <App />
+        </Elements>
       </PersistGate>
     </BrowserRouter>
   </Provider>,

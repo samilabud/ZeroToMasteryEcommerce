@@ -43,18 +43,23 @@ app.get('/service-worker.js',(req,res)=>{
 })
 
 app.post('/payment',function(req,res){
-    const body = {
-        source: req.body.token.id,
-        amount: req.body.amount,
-        currency: 'usd'
+    try {
+        const { amount } = req.body;
+
+        const paymentIntent = stripe.paymentIntents.create({
+            amount,
+            currency: "usd",
+            payment_method_types: ["card"],
+        });
+        return res.status(200).send({
+            statusCode: 200,
+            body: JSON.stringify({ paymentIntent }),
+        });
+    } catch (error) {
+        console.log({ error });
+        return res.status(500).send({
+            statusCode: 400,
+            body: JSON.stringify({ error }),
+        });
     }
-
-    stripe.charges.create(body, (stripeErr, stripeRes)=>{
-        if(stripeErr){
-            res.status(500).send({error: stripeErr});
-        }else{
-            res.status(200).send({success:stripeRes});
-        }
-    });
-
 })
