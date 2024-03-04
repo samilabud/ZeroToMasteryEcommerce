@@ -3,8 +3,6 @@ const path = require("path");
 const compression = require("compression");
 const enforce = require("express-sslify");
 
-//usar el .env si no estamos en produccion, de lo contrario setear las variables en produccion tipo:
-//heroku config:set STRYPE_SECRET_KEY=1234
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
