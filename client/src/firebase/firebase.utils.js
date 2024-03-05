@@ -1,6 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 
 const config = {
   apiKey: "AIzaSyAb9UlJHKZQkqFaA3vJ25mgqsIOIl1CEQY",
@@ -21,8 +27,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) {
     return;
   }
-  const userRef = doc(`users/${userAuth.uid}`); //Query Reference
-  const snapShot = await userRef.get(); //Document Reference, getting snapshot (Document Snapshot)
+  const userRef = doc(firestore, `users/${userAuth.uid}`); //Query Reference
+  const snapShot = await getDoc(userRef); //Document Reference, getting snapshot (Document Snapshot)
   if (!snapShot.exists) {
     //Return true if document exists
     const { displayName, email } = userAuth;

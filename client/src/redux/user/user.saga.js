@@ -16,6 +16,12 @@ import {
   createUserProfileDocument,
   getCurrentUser,
 } from "../../firebase/firebase.utils";
+import {
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { getDoc } from "firebase/firestore";
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   try {
@@ -24,7 +30,8 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
       userAuth,
       additionalData
     );
-    const userSnapshot = yield userRef.get();
+    console.log({ userRef });
+    const userSnapshot = yield getDoc(userRef);
     if (userSnapshot) {
       yield put(SignInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
     }
@@ -35,7 +42,7 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
 
 export function* signInWithGoogle() {
   try {
-    const { user } = yield auth.signInWithPopup(googleProvider);
+    const { user } = yield signInWithPopup(auth, googleProvider);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
     yield put(SignInFailure(error));
@@ -44,9 +51,10 @@ export function* signInWithGoogle() {
 
 export function* signInWithEmail({ payload: { email, password } }) {
   try {
-    const { user } = yield auth.signInWithEmailAndPassword(email, password);
+    const { user } = yield signInWithEmailAndPassword(auth, email, password);
     yield getSnapshotFromUserAuth(user);
   } catch (error) {
+    console.log("shit");
     yield put(SignInFailure(error));
   }
 }
@@ -56,7 +64,11 @@ export function* signInAterSingUp({ payload: { user, additionalData } }) {
 //signup
 export function* signupUser({ payload: { displayName, email, password } }) {
   try {
-    const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+    const { user } = yield createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     yield createUserProfileDocument(user, { displayName });
     yield put(signupSuccess({ user, additionalData: { displayName } }));
   } catch (error) {
@@ -89,10 +101,8 @@ export function* onSignOutStart() {
 
 export function* isUserAuthenticated() {
   try {
-    const userAuth = getCurrentUser();
-    console.log({ userAuth }, "isUserAuthenticated");
+    const userAuth = yield getCurrentUser();
     if (!userAuth) return;
-    console.log({ userAuth }, "isUserAuthenticated2");
     yield getSnapshotFromUserAuth(userAuth);
   } catch (error) {
     yield put(SignInFailure(error));
