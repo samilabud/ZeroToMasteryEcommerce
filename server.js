@@ -2,27 +2,23 @@ const express = require("express");
 const path = require("path");
 const compression = require("compression");
 const enforce = require("express-sslify");
+var cors = require("cors");
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
-
 const stripe = require("stripe")(process.env.STRYPE_SECRET_KEY);
 
 const app = express();
 const port = process.env.PORT || 2500;
 
 //Middelwares
-app.use(express.urlencoded({ extended: false })); //parsear el request por post y html por form url encoded
-app.use(express.json()); //parsear el request por json
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(compression());
-  // app.use(enforce.HTTPS({trustProtoHeader:true}));
-  // app.use(express.static(path.join(__dirname, 'client/build')));
-  // app.get('*', function(req, res){
-  //     res.sendFile(path.join(__dirname,'client/build','index.html'));
-  // })
 }
+app.use(cors());
 
 app.listen(port, (error) => {
   if (error) {

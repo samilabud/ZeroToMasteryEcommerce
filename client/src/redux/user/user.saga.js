@@ -30,7 +30,6 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
       userAuth,
       additionalData
     );
-    console.log({ userRef });
     const userSnapshot = yield getDoc(userRef);
     if (userSnapshot) {
       yield put(SignInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
