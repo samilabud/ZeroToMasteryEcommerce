@@ -1,4 +1,4 @@
-import { configureStore, Tuple } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { persistStore } from "redux-persist";
 import createSagaMiddleWare from "redux-saga";
@@ -10,7 +10,7 @@ const sagaMiddleWare = createSagaMiddleWare();
 
 const middlewares = [sagaMiddleWare];
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.REACT_APP_NODE_ENV !== "production") {
   middlewares.push(logger);
 }
 
