@@ -1,12 +1,15 @@
 import React, { useEffect, lazy, Suspense } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router";
+import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { Elements } from "@stripe/react-stripe-js";
 
 import GlobalStyle from "./global.styles";
 
-import { selectCurrentUser } from "./redux/user/user.selectors";
-import { checkUserSession } from "./redux/user/user.actions";
+import { selectCurrentUser } from "./redux/user/user.selectors.js";
+import { checkUserSession } from "./redux/user/user.actions.js";
+import { stripePromise } from "./utils/stripe/stripe.utils";
 
 import Header from "./components/header/header.component";
 import Spinner from "./components/spinner/spinner.component";
@@ -34,7 +37,14 @@ const App = ({ checkUserSession, currentUser }) => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/shop/*" element={<ShopPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route
+              path="/checkout"
+              element={
+                <Elements stripe={stripePromise}>
+                  <CheckoutPage />
+                </Elements>
+              }
+            />
             <Route
               path="/signin"
               element={currentUser ? <Navigate to="/" /> : <SignInAndSignUp />}
